@@ -1,0 +1,60 @@
+# Google Ads
+doubleclick.net
+googleadservices.com
+googlesyndication.com
+adservice.google.com
+pagead2.googlesyndication.com
+
+# Meta
+facebookadservices.com
+connect.facebook.net
+
+# Amazon
+aax.amazon-adsystem.com
+amazon-adsystem.com
+
+# Microsoft
+ads.msn.com
+ads1.msads.net
+ads2.msads.net
+bingads.microsoft.com
+
+# Common Ad Networks
+adnxs.com
+adsystem.com
+advertising.com
+criteo.com
+criteo.net
+pubmatic.com
+rubiconproject.com
+openx.net
+openx.com
+taboola.com
+outbrain.com
+smartadserver.com
+scorecardresearch.com
+yieldmo.com
+moatads.com
+lijit.com
+casalemedia.com
+media.net
+
+# Mobile Tracking
+appsflyer.com
+adjust.com
+branch.io
+kochava.com
+singular.net
+
+# Analytics
+google-analytics.com
+googletagmanager.com
+hotjar.com
+mixpanel.com
+segment.io
+
+# Misc
+ads.yahoo.com
+adroll.com
+quantserve.com
+mathtag.com
