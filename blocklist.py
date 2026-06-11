@@ -1,20 +1,35 @@
-def load_blocklist(filename="blocklist.txt"):
-    blocked = set()
+class Blocklist:
+    def __init__(self, path):
+        self.path = path
+        self.blocked = set()
+        self.load()
 
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            for line in file:
-                domain = line.strip().lower()
+    def load(self):
+        self.blocked.clear()
 
-                if not domain:
-                    continue
+        try:
+            with open(self.path, "r", encoding="utf-8") as file:
+                for line in file:
+                    domain = line.strip().lower()
 
-                if domain.startswith("#"):
-                    continue
+                    if not domain or domain.startswith("#"):
+                        continue
 
-                blocked.add(domain)
+                    self.blocked.add(domain.rstrip("."))
+        except FileNotFoundError:
+            print(f"[WARN] Blocklist not found: {self.path}")
 
-    except FileNotFoundError:
-        print(f"Warning: {filename} not found.")
+    def is_blocked(self, domain):
+        domain = domain.lower().rstrip(".")
 
-    return blocked
+        if domain in self.blocked:
+            return True
+
+        parts = domain.split(".")
+
+        for i in range(1, len(parts)):
+            parent = ".".join(parts[i:])
+            if parent in self.blocked:
+                return True
+
+        return False

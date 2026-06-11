@@ -1,85 +1,100 @@
-from dnslib import DNSRecord, RR, A, QTYPE
-from blocklist import load_blocklist
+from dnslib import DNSRecord, RR, A, AAAA, QTYPE, RCODE
+
+from config import BLOCKLIST_FILE, CACHE_ENABLED, DEFAULT_TTL
+from blocklist import Blocklist
 from cache import DNSCache
 from logger import DNSLogger
-
-import socket
+from upstream import forward_to_upstream
 
 
 class AdBlockResolver:
     def __init__(self):
-        self.blocked_domains = load_blocklist()
+        self.blocklist = Blocklist(BLOCKLIST_FILE)
         self.cache = DNSCache()
         self.logger = DNSLogger()
 
-        print(f"Loaded {len(self.blocked_domains)} blocked domains")
+    def resolve(self, data):
+        try:
+            request = DNSRecord.parse(data)
 
-    def resolve(self, request, handler):
-        domain = str(request.q.qname).rstrip(".").lower()
+            domain = str(request.q.qname).rstrip(".").lower()
+            qtype = QTYPE[request.q.qtype]
+
+            if self.blocklist.is_blocked(domain):
+                self.logger.blocked(domain)
+                return self.make_block_response(request)
+
+            cache_key = self.get_cache_key(request)
+
+            if CACHE_ENABLED:
+                cached_response = self.cache.get(cache_key)
+
+                if cached_response:
+                    cached_packet = DNSRecord.parse(cached_response)
+                    cached_packet.header.id = request.header.id
+
+                    self.logger.cache_hit(domain)
+                    return cached_packet.pack()
+
+            response = forward_to_upstream(data)
+
+            if CACHE_ENABLED and response:
+                ttl = self.extract_ttl(response)
+                self.cache.set(cache_key, response, ttl)
+                self.logger.cache_store(domain)
+
+            self.logger.allowed(domain)
+            return response
+
+        except Exception as error:
+            print(f"[RESOLVER ERROR] {error}")
+            return None
+
+    def make_block_response(self, request):
+        reply = request.reply()
+        reply.header.rcode = RCODE.NOERROR
+
+        qname = request.q.qname
         qtype = QTYPE[request.q.qtype]
 
-        cache_key = f"{domain}:{qtype}"
-
-        cached_response = self.cache.get(cache_key)
-
-        if cached_response:
-            self.logger.cache_hit(cache_key)
-            return DNSRecord.parse(cached_response)
-
-        if self.is_blocked(domain):
-            self.logger.blocked(domain)
-            return self.block_response(request)
-
-        self.logger.allowed(domain)
-
-        response = self.forward_request(request)
-
-        self.cache.set(
-            cache_key,
-            response.pack(),
-            ttl=300
-        )
-
-        self.logger.cache_store(cache_key)
-
-        return response
-
-    def is_blocked(self, domain):
-        return any(
-            domain == blocked or domain.endswith("." + blocked)
-            for blocked in self.blocked_domains
-        )
-
-    def block_response(self, request):
-        reply = request.reply()
-
-        reply.add_answer(
-            RR(
-                rname=request.q.qname,
-                rtype=QTYPE.A,
-                rclass=1,
-                ttl=60,
-                rdata=A("0.0.0.0")
+        if qtype == "A":
+            reply.add_answer(
+                RR(
+                    rname=qname,
+                    rtype=QTYPE.A,
+                    rclass=1,
+                    ttl=DEFAULT_TTL,
+                    rdata=A("0.0.0.0")
+                )
             )
-        )
 
-        return reply
+        elif qtype == "AAAA":
+            reply.add_answer(
+                RR(
+                    rname=qname,
+                    rtype=QTYPE.AAAA,
+                    rclass=1,
+                    ttl=DEFAULT_TTL,
+                    rdata=AAAA("::")
+                )
+            )
 
-    def forward_request(self, request):
+        return reply.pack()
+
+    def get_cache_key(self, request):
+        qname = str(request.q.qname).lower()
+        qtype = QTYPE[request.q.qtype]
+
+        return f"{qname}:{qtype}"
+
+    def extract_ttl(self, response_data):
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.settimeout(3)
+            response = DNSRecord.parse(response_data)
 
-            sock.sendto(
-                request.pack(),
-                ("1.1.1.1", 53)
-            )
+            if response.rr:
+                return min(record.ttl for record in response.rr)
 
-            data, _ = sock.recvfrom(4096)
+        except Exception:
+            pass
 
-            return DNSRecord.parse(data)
-
-        except Exception as e:
-            print("Forwarding error:", e)
-
-            return request.reply()
+        return DEFAULT_TTL

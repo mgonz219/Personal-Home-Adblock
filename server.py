@@ -1,20 +1,21 @@
-from dnslib.server import DNSServer
+import socket
+
+from config import LISTEN_IP, LISTEN_PORT
 from resolver import AdBlockResolver
-import time
 
 
 def start_dns_server():
     resolver = AdBlockResolver()
 
-    server = DNSServer(
-        resolver,
-        port=53,
-        address="127.0.0.1"
-    )
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind((LISTEN_IP, LISTEN_PORT))
 
-    print("DNS server running on 127.0.0.1:53")
-
-    server.start_thread()
+    print(f"DNS server running on {LISTEN_IP}:{LISTEN_PORT}")
 
     while True:
-        time.sleep(1)
+        data, client_address = sock.recvfrom(4096)
+
+        response = resolver.resolve(data)
+
+        if response:
+            sock.sendto(response, client_address)
