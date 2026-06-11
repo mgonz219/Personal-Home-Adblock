@@ -13,9 +13,18 @@ def start_dns_server():
     print(f"DNS server running on {LISTEN_IP}:{LISTEN_PORT}")
 
     while True:
-        data, client_address = sock.recvfrom(4096)
+        try:
+            data, client_address = sock.recvfrom(4096)
 
-        response = resolver.resolve(data)
+            response = resolver.resolve(data)
 
-        if response:
-            sock.sendto(response, client_address)
+            if response:
+                sock.sendto(response, client_address)
+
+        except ConnectionResetError:
+            print("[SERVER WARNING] UDP connection reset ignored")
+            continue
+
+        except Exception as error:
+            print(f"[SERVER ERROR] {error}")
+            continue

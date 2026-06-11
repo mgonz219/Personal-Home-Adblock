@@ -58,3 +58,15 @@ ads.yahoo.com
 adroll.com
 quantserve.com
 mathtag.com
+
+
+#pluto - tubi
+ads.production-public.tubi.io
+service-ad-image.prd.pluto.tv
+
+7f077.v.fwmrm.net
+user-sync.fwmrm.net
+s.adex2.fwmrm.net
+dpm.demdex.net
+idsync.rlcdn.com
+redfastlabs.com
