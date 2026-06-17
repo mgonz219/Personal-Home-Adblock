@@ -9,7 +9,10 @@ from upstream import forward_to_upstream
 
 class AdBlockResolver:
     def __init__(self):
-        self.blocklist = Blocklist(BLOCKLIST_FILE)
+        self.blocklist = Blocklist([
+            BLOCKLIST_FILE,
+            "blocklists"
+        ])
         self.cache = DNSCache()
         self.logger = DNSLogger()
 

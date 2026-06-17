@@ -1,4 +1,4 @@
-#!/home/mark/Projects/adblock/venv/bin/python3
+#!/home/mgonz219/adblock/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
