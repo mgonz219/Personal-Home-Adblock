@@ -1,50 +1,105 @@
+# Roku
+logs.roku.com
+scribe.logs.roku.com
+customer-feedbacks.web.roku.com
+identity.ads.roku.com
+ads.roku.com
+roku.adsmeasurement.com
+liberty.logs.roku.com
+
+# Tubi
+ads.tubitv.com
+tubitv.adtelligent.com
+ads.production-public.tubi.io
+rainmaker.production-public.tubi.io
+
+# Pluto
+ads.pluto.tv
+
+# Innovid
+innovid.com
+
+# Nielsen
+imrworldwide.com
+
+# Youbora
+youborafds01.com
+youboranqs01.com
+
+# RAVM
+ravm.tv
+
+# iSpot
+pi.ispot.tv
+
+# Braze
+sdk.iad-01.braze.com
+
+# IAS
+adsafeprotected.com
+
+# NinthDecimal
+lciapi.ninthdecimal.com
+
 # Google Ads
 doubleclick.net
 googleadservices.com
 googlesyndication.com
 adservice.google.com
-pagead2.googlesyndication.com
 
-# Meta
-facebookadservices.com
-connect.facebook.net
-
-# Amazon
-aax.amazon-adsystem.com
+# Amazon Ads
 amazon-adsystem.com
 
-# Microsoft
+# Microsoft Ads
 ads.msn.com
 ads1.msads.net
 ads2.msads.net
 bingads.microsoft.com
 
-# Common Ad Networks
-adnxs.com
-adsystem.com
-advertising.com
+# Trade Desk
+adsrvr.org
+
+# Magnite / Rubicon
+rubiconproject.com
+
+# Pubmatic
+pubmatic.com
+
+# OpenX
+openx.com
+openx.net
+
+# Criteo
 criteo.com
 criteo.net
-pubmatic.com
-rubiconproject.com
-openx.net
-openx.com
+
+# Taboola / Outbrain
 taboola.com
 outbrain.com
+
+# Smart
 smartadserver.com
-scorecardresearch.com
-yieldmo.com
-moatads.com
-lijit.com
-casalemedia.com
+
+# AdColony
+adcolony.com
+
+# Media.net
 media.net
 
-# Mobile Tracking
-appsflyer.com
-adjust.com
-branch.io
-kochava.com
-singular.net
+# Scorecard
+scorecardresearch.com
+
+# Yieldmo
+yieldmo.com
+
+# Moat
+moatads.com
+
+# Casale
+casalemedia.com
+
+# Lijit
+lijit.com
 
 # Analytics
 google-analytics.com
@@ -53,20 +108,55 @@ hotjar.com
 mixpanel.com
 segment.io
 
+# Mobile attribution
+appsflyer.com
+adjust.com
+branch.io
+kochava.com
+singular.net
+
+# Adobe Audience Manager
+demdex.net
+
+# LiveIntent
+liadm.com
+liveintent.com
+
+# ID5
+id5-sync.com
+
+# RLCDN
+rlcdn.com
+
+# Proximic
+proximic.com
+
+# Rezync
+rezync.com
+
+# WKND
+wknd.ai
+
+# BounceX
+bounceexchange.com
+bouncex.net
+
+# Chartbeat
+chartbeat.net
+
+# Yandex
+yandex.ru
+yandex.com
+
+# Samsung Ads
+samsungads.com
+
+# Xiaomi Ads
+api.ad.xiaomi.com
+sdkconfig.ad.xiaomi.com
+sdkconfig.ad.intl.xiaomi.com
+
 # Misc
-ads.yahoo.com
-adroll.com
-quantserve.com
-mathtag.com
-
-
-#pluto - tubi
-ads.production-public.tubi.io
-service-ad-image.prd.pluto.tv
-
-7f077.v.fwmrm.net
-user-sync.fwmrm.net
-s.adex2.fwmrm.net
-dpm.demdex.net
-idsync.rlcdn.com
-redfastlabs.com
+ad-delivery.net
+btloader.com
+cdnwidget.com
